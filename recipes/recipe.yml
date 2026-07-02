@@ -3,11 +3,11 @@
 # image will be published to ghcr.io/<user>/<name>
 name: windowmaker-os
 # description will be included in the image's metadata
-description: This is my personal OS image.
+description: Atomic Fedora using window maker.
 
 # the base image to build on top of (FROM) and the version tag to use
-base-image: ghcr.io/ublue-os/silverblue-main
-image-version: 42 # latest is also supported if you want new updates ASAP
+base-image: ghcr.io/ublue-os/base-main
+image-version: latest # latest is also supported if you want new updates ASAP
 
 # module configuration, executed in order
 # you can include multiple instances of the same module
@@ -21,10 +21,37 @@ modules:
     repos:
       copr:
         - atim/starship
+    group-install:
+      with-optional: true
+      packages:
+        - printing
+
     install:
       packages:
-        - micro
+        # windowmaker stack
+        - WindowMaker
+        - WindowMaker-extra
+        - xterm
+        - rxvt-unicode
+        - xorg-x11-server-Xorg
+        - xorg-x11-xinit
+        - xorg-x11-xauth
+        - xorg-x11-utils
+        - xorg-x11-apps
+        - xscreensaver
+        - xrandr
+        - feh
+        - sddm
+        # system stack
+        - NetworkManager-wifi
+        - network-manager-applet
+        - pavucontrol
+        - xdg-user-dirs
+        - xdg-utils
+        # misc
+        - vim
         - starship
+        - fish
     remove:
       packages:
         # example: removing firefox (in favor of the flatpak)
@@ -41,5 +68,11 @@ modules:
           - org.mozilla.firefox
           - org.gnome.Loupe
       - scope: user # Also add Flathub user repo, but no user packages
+
+  # Enable/disable system services expected for this image.
+  - type: systemd
+    system:
+      enabled:
+        - sddm.service
 
   - type: signing # this sets up the proper policy & signing files for signed images to work fully
