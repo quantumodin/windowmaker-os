@@ -36,18 +36,26 @@ modules:
         - xorg-x11-server-Xorg
         - xorg-x11-xinit
         - xorg-x11-xauth
-        - xorg-x11-utils
-        - xorg-x11-apps
         - xscreensaver
         - xrandr
         - feh
         - sddm
+
         # system stack
         - NetworkManager-wifi
         - network-manager-applet
         - pavucontrol
         - xdg-user-dirs
         - xdg-utils
+
+        # audio
+        - pipewire
+        - pipewire-alsa
+        - pipewire-pulseaudio
+        - wireplumber
+        - bluez
+        - bluez-tools
+
         # misc
         - vim
         - starship
@@ -73,6 +81,7 @@ modules:
   - type: systemd
     system:
       enabled:
+        - bluetooth.service
         - sddm.service
 
   - type: signing # this sets up the proper policy & signing files for signed images to work fully
